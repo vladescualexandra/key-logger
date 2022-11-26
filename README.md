@@ -22,7 +22,7 @@ cd key-logger
 ```
 4. Compile the source code:
 ```
-g++ -o key-logger.exe '.\key-logger.cpp'
+g++ -o key-logger.exe key-logger.cpp
 ```
 5. Run the program that was created (```key-logger.exe```):
 ```
